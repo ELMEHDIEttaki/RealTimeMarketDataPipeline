@@ -1,7 +1,7 @@
 # **MarketDataStreamPipeline**
 
 ## **Overview**
-**MarketDataStreamPipeline** is a scalable, real-time data pipeline designed to process and visualize market data from the TwelveData API. This architecture integrates multiple powerful components:
+**MarketDataStreamPipeline** is a scalable, real-time data pipeline designed to process and visualize market data from the TwelveData's websocket API. This architecture integrates multiple powerful components:
 - **Apache Kafka** for reliable message brokering
 - **Apache Spark** for data processing
 - **Cassandra** for distributed storage
@@ -25,4 +25,41 @@ This repository will provides all the code, configuration, and instructions need
 
 ---
 
-## **Project Structure** (In Progress)
+## **Project Structure**
+The project is organized into the following directories:
+
+```
+MarketDataStreamPipeline/
+│
+├── ingestion/
+│   ├── twelve_data_producer.py      # Python producer to ingest data from TwelveData API
+│   ├── config.json                  # Configuration file for producer settings
+│   └── Dockerfile                   # Dockerfile to containerize the producer
+│
+├── message-broker/
+│   ├── kafka/
+│   │   ├── docker-compose.yml       # Docker Compose file for Kafka and Zookeeper
+│   │   └── config/                  # Kafka configuration files
+│   └── kafdrop/                     # Kafdrop UI for Kafka monitoring
+│
+├── stream-processing/
+│   ├── stream_processor.py    # Spark code for processing Kafka streams
+│   └── Dockerfile                   # Dockerfile for Spark container
+│
+├── database/
+│   ├── cassandra-setup.cql          # Script to initialize Cassandra keyspaces and tables
+│   └── Dockerfile                   # Dockerfile for Cassandra container
+│
+├── visualization/
+│   ├── grafana/
+│   │   └── dashboard.js             # Grafana dashboard configuration
+│   └── Dockerfile                   # Dockerfile for Grafana
+│
+├── infrastructure/
+│   ├── terraform/                   # Terraform scripts for infrastructure setup
+│   └── kubernetes/                  # Kubernetes deployment files
+│
+└── README.md                        # Project documentation
+```
+
+---
