@@ -1,13 +1,3 @@
-# RealTimeMarketDataPipeline
-RealTimeMarketDataPipeline is a robust, end-to-end real-time data pipeline designed for processing and visualizing market data from TwelveData’s WebSocket API.
-
-
-This architecture leverages Apache Kafka for message brokering, Apache Spark for real-time stream processing, Cassandra for scalable data storage, and Grafana for visualization.
-
-The project is containerized using Docker and orchestrated on Kubernetes, making it scalable, flexible, and suitable for cloud deployment. Infrastructure provisioning and management are automated with Terraform, simplifying deployment and scaling across various environments.
-
-Here's a detailed README.md for the first version of your project:
-
 ---
 
 # **MarketDataStreamPipeline**
@@ -21,7 +11,7 @@ Here's a detailed README.md for the first version of your project:
 - **Kubernetes** for container orchestration
 - **Terraform** for infrastructure provisioning
 
-This repository provides all the code, configuration, and instructions needed to deploy and operate the pipeline.
+This repository will provides all the code, configuration, and instructions needed to deploy and operate the pipeline.
 
 ---
 
