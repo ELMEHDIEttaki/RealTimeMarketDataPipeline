@@ -1,0 +1,4 @@
+websocket_url: "wss://api.twelvedata.com/v1/websocket"
+kafka_broker: "localhost:9092"
+kafka_topic: "market"
+api_key: "3a08aff23f824e18b12b51581ed3e109"
