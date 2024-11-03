@@ -1,5 +1,6 @@
 import io
-import avro.schema
+#import avro.schema
+from avro.io import DatumWriter, BinaryEncoder
 import avro.io
 from kafka import KafkaProducer
 
@@ -12,10 +13,17 @@ def load_avro_schema(schema_path):
     with open(schema_path, 'r') as schema_file:
         return avro.schema.parse(schema_file.read())
 
-def avro_encode(data, schema):
-    """Encode a data dictionary into Avro format."""
-    writer = avro.io.DatumWriter(schema)
+# def avro_encode(data, schema):
+#     """Encode a data dictionary into Avro format."""
+#     writer = avro.io.DatumWriter(schema)
+#     bytes_writer = io.BytesIO()
+#     encoder = avro.io.BinaryEncoder(bytes_writer)
+#     writer.write(data, encoder)
+#     return bytes_writer.getvalue()
+
+def avro_encode(data, avro_schema):
     bytes_writer = io.BytesIO()
-    encoder = avro.io.BinaryEncoder(bytes_writer)
+    encoder = BinaryEncoder(bytes_writer)
+    writer = DatumWriter(avro_schema)
     writer.write(data, encoder)
     return bytes_writer.getvalue()
