@@ -3,10 +3,11 @@ import os
 import logging
 from twelvedata import TDClient  # Replace with the actual TwelveData client library if different
 from dotenv import load_dotenv
-from src.utils.function import load_producer, load_avro_schema, avro_encode
+from src.utils.function import (load_producer, load_avro_schema, 
+                                avro_encode, adapt_message_for_avro)
 
 # Setup environment variables
-env_file = '/home/elmehdi/Desktop/RealTimeMarketDataPipeline/.env'
+env_file = '.env'
 load_dotenv(env_file, override=True)
 
 # Create logs directory if it doesn't exist
@@ -71,39 +72,31 @@ class TwelveDataPipeline:
         """Event handler for TwelveData websocket."""
         historical_messages.append(event)  # Store events for later processing
 
-# Helper functions for the main execution flow
-def validate_tickers(pipeline, tickers):
-    """Validate tickers and log their validity."""
-    for ticker in tickers:
-        if pipeline.validate_ticker(ticker):
-            logger.info(f"Ticker '{ticker}' is valid.")
-        else:
-            logger.info(f"Ticker '{ticker}' is not valid.")
+    # Helper functions for the main execution flow
+    def validate_tickers(pipeline, tickers):
+        """Validate tickers and log their validity."""
+        for ticker in tickers:
+            if pipeline.validate_ticker(ticker):
+                logger.info(f"Ticker '{ticker}' is valid.")
+            else:
+                logger.info(f"Ticker '{ticker}' is not valid.")
 
-# Automate Message Adaptation
-def adapt_message_for_avro(message, expected_fields):
-    # Ensure all expected fields are present in the message, filling with None if missing
-    for field in expected_fields:
-        if field not in message:
-            message[field] = None
-    return message
-
-
-def publish_messages_to_kafka(pipeline, topic):
-    """Publish messages to Kafka topic."""
-    expected_fields = [
-            "event", "symbol", "currency_base", "currency_quote",
-            "exchange", "type", "timestamp", "price", "bid", "ask", "day_volume"
-        ]
-    for message in historical_messages:
-        logger.info(f"message befor select price event: {message }")
-        if message.get('event') == "price":
-            adapted_message = adapt_message_for_avro(message, expected_fields)
-            logger.info(f"selected price event with adaptation approach: {adapted_message}")
-            logger.info(f"Publishing... message: {adapted_message}")
-            pipeline.send_to_kafka(topic=topic, data=message)
-            logger.info(f"sent message to kafka: {adapted_message}")
-    logger.info(f"Messages published to Kafka topic: {topic}")
+    # sent messages to kafka broker
+    def publish_messages_to_kafka(pipeline, topic):
+        """Publish messages to Kafka topic."""
+        expected_fields = [
+                "event", "symbol", "currency_base", "currency_quote",
+                "exchange", "type", "timestamp", "price", "bid", "ask", "day_volume"
+            ]
+        for message in historical_messages:
+            logger.info(f"message befor select price event: {message }")
+            if message.get('event') == "price":
+                adapted_message = adapt_message_for_avro(message, expected_fields)
+                logger.info(f"selected price event with adaptation approach: {adapted_message}")
+                logger.info(f"Publishing... message: {adapted_message}")
+                pipeline.send_to_kafka(topic=topic, data=message)
+                logger.info(f"sent message to kafka: {adapted_message}")
+        logger.info(f"Messages published to Kafka topic: {topic}")
 
 # Main execution
 if __name__ == "__main__":
@@ -112,7 +105,8 @@ if __name__ == "__main__":
     logger.info(f"API-TOKEN : {API_TOKEN}")
     KAFKA_SERVER = "localhost:9092"
     SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
-    KAFKA_TOPIC = "market"
+    KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
+    logger.info(f"API-TOKEN : {API_TOKEN}")
 
     # Set tickers and initialize message storage
     tickers = ['BTC/USD', 'ETH/BTC', 'AAPL']
@@ -126,12 +120,12 @@ if __name__ == "__main__":
     )
 
     # Validate tickers
-    validate_tickers(pipeline, tickers)
+    pipeline.validate_tickers(pipeline, tickers)
 
     try:
         while True:
             pipeline.manage_subscription(tickers=tickers, action='connect')
-            publish_messages_to_kafka(pipeline, topic=KAFKA_TOPIC)
+            pipeline.publish_messages_to_kafka(pipeline, topic=KAFKA_TOPIC)
             time.sleep(10)
     except KeyboardInterrupt:
         print("Process interrupted by user.")
