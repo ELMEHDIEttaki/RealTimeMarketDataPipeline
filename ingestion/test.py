@@ -63,6 +63,7 @@ class TwelveDataPipeline:
     def send_to_kafka(self, topic, data):
         """Encode and send data to Kafka."""
         encoded_data = avro_encode(data, self.avro_schema)
+        logger.info(f"Display encoded data content: {encoded_data}")
         self.kafka_producer.send(topic, encoded_data)
         self.kafka_producer.flush()
         logger.info(f"Sent data to Kafka topic '{topic}'")
@@ -73,16 +74,16 @@ class TwelveDataPipeline:
         historical_messages.append(event)  # Store events for later processing
 
     # Helper functions for the main execution flow
-    def validate_tickers(pipeline, tickers):
+    def validate_tickers(self, tickers):
         """Validate tickers and log their validity."""
         for ticker in tickers:
-            if pipeline.validate_ticker(ticker):
+            if self.validate_ticker(ticker):
                 logger.info(f"Ticker '{ticker}' is valid.")
             else:
                 logger.info(f"Ticker '{ticker}' is not valid.")
 
     # sent messages to kafka broker
-    def publish_messages_to_kafka(pipeline, topic):
+    def publish_messages_to_kafka(self, topic):
         """Publish messages to Kafka topic."""
         expected_fields = [
                 "event", "symbol", "currency_base", "currency_quote",
@@ -94,7 +95,7 @@ class TwelveDataPipeline:
                 adapted_message = adapt_message_for_avro(message, expected_fields)
                 logger.info(f"selected price event with adaptation approach: {adapted_message}")
                 logger.info(f"Publishing... message: {adapted_message}")
-                pipeline.send_to_kafka(topic=topic, data=message)
+                self.send_to_kafka(topic=topic, data=message)
                 logger.info(f"sent message to kafka: {adapted_message}")
         logger.info(f"Messages published to Kafka topic: {topic}")
 
@@ -106,7 +107,7 @@ if __name__ == "__main__":
     KAFKA_SERVER = "localhost:9092"
     SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
     KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
-    logger.info(f"API-TOKEN : {API_TOKEN}")
+    logger.info(f"KAFKA TOPIC NAME : {KAFKA_TOPIC}")
 
     # Set tickers and initialize message storage
     tickers = ['BTC/USD', 'ETH/BTC', 'AAPL']
@@ -118,14 +119,13 @@ if __name__ == "__main__":
         kafka_server=KAFKA_SERVER, 
         schema_path=SCHEMA_PATH
     )
-
     # Validate tickers
-    pipeline.validate_tickers(pipeline, tickers)
+    pipeline.validate_tickers(tickers)
 
     try:
         while True:
             pipeline.manage_subscription(tickers=tickers, action='connect')
-            pipeline.publish_messages_to_kafka(pipeline, topic=KAFKA_TOPIC)
+            pipeline.publish_messages_to_kafka(topic=KAFKA_TOPIC)
             time.sleep(10)
     except KeyboardInterrupt:
         print("Process interrupted by user.")

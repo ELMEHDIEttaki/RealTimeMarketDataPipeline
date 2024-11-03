@@ -1,8 +1,12 @@
-import io
+#import io
 #import avro.schema
-from avro.io import DatumWriter, BinaryEncoder
-import avro.io
+# from avro.io import DatumWriter, BinaryEncoder
+# import avro.io
+# import avro.schema
+import io
 import avro.schema
+import avro.io
+import json
 from kafka import KafkaProducer
 
 def load_producer(kafka_server):
@@ -23,13 +27,6 @@ def load_avro_schema(schema_path):
 #     writer.write(data, encoder)
 #     return bytes_writer.getvalue()
 
-def avro_encode(data, avro_schema):
-    writer = avro.io.DatumReader(avro_schema)
-    bytes_writer = io.BytesIO()
-    encoder = avro.io.BinaryEncoder(bytes_writer)
-    writer.write(data, encoder)
-    return bytes_writer.getvalue()
-
 # Automate Message Adaptation
 def adapt_message_for_avro(message, expected_fields):
     # Ensure all expected fields are present in the message, filling with None if missing
@@ -37,6 +34,15 @@ def adapt_message_for_avro(message, expected_fields):
         if field not in message:
             message[field] = None
     return message
+
+
+def avro_encode(data, avro_schema):
+    writer = avro.io.DatumWriter(avro_schema)
+    bytes_writer = io.BytesIO()
+    encoder = avro.io.BinaryEncoder(bytes_writer)
+    writer.write(data, encoder)
+    return bytes_writer.getvalue()
+
 
     # bytes_writer = io.BytesIO()
     # encoder = BinaryEncoder(bytes_writer)
