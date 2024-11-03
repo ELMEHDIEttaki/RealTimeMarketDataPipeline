@@ -96,8 +96,9 @@ if __name__ == "__main__":
         while True:
             pipeline.sub(stat='connect')
             for message in historical_messages:
+                logger.info(f"Display Message without select event: {message}")
                 if message.get('event') == "price":
-                    logger.info(message)
+                    logger.info(f"Display Message: {message}")
                     pipeline.send_to_kafka(topic=KAFKA_TOPIC, value=message)
             logger.info(f"Messages published to Kafka topic: {KAFKA_TOPIC}")
             time.sleep(10)

@@ -80,18 +80,36 @@ def validate_tickers(pipeline, tickers):
         else:
             logger.info(f"Ticker '{ticker}' is not valid.")
 
+# Automate Message Adaptation
+def adapt_message_for_avro(message, expected_fields):
+    # Ensure all expected fields are present in the message, filling with None if missing
+    for field in expected_fields:
+        if field not in message:
+            message[field] = None
+    return message
+
+
 def publish_messages_to_kafka(pipeline, topic):
     """Publish messages to Kafka topic."""
+    expected_fields = [
+            "event", "symbol", "currency_base", "currency_quote",
+            "exchange", "type", "timestamp", "price", "bid", "ask", "day_volume"
+        ]
     for message in historical_messages:
+        logger.info(f"message befor select price event: {message }")
         if message.get('event') == "price":
-            logger.info(f"Publishing message: {message}")
+            adapted_message = adapt_message_for_avro(message, expected_fields)
+            logger.info(f"selected price event with adaptation approach: {adapted_message}")
+            logger.info(f"Publishing... message: {adapted_message}")
             pipeline.send_to_kafka(topic=topic, data=message)
+            logger.info(f"sent message to kafka: {adapted_message}")
     logger.info(f"Messages published to Kafka topic: {topic}")
 
 # Main execution
 if __name__ == "__main__":
     # Load configurations from environment
-    API_TOKEN = os.getenv('API_KEY')
+    API_TOKEN = os.getenv('API_TOKEN')
+    logger.info(f"API-TOKEN : {API_TOKEN}")
     KAFKA_SERVER = "localhost:9092"
     SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
     KAFKA_TOPIC = "market"
