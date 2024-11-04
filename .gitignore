@@ -2,4 +2,6 @@
 /Architecture.png
 /env
 /.env
-/logs
+/logs/app.log
+/logs/avro.log
+

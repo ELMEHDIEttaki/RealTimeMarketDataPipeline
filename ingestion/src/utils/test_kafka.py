@@ -1,86 +1,67 @@
-from kafka import KafkaConsumer
-#from fastavro.schema import load_schema
-from function import load_avro_schema
-from fastavro import schemaless_reader
 import io
-from dotenv import load_dotenv
 import os
+import logging
+from kafka import KafkaConsumer
+import avro.schema
+import avro.io
+from dotenv import load_dotenv
+from function import load_avro_schema, avro_decode
 
 # Setup environment variables
 env_file = '.env'
 load_dotenv(env_file, override=True)
 
-# Kafka Configuration
-kafka_broker = 'localhost:9092'  # Update with your Kafka broker
-kafka_topic = os.getenv('KAFKA_TOPIC') # Update with your Kafka topic
-print(kafka_topic)
-# Avro Schema (load the Avro schema from a .avsc file)
-avro_schema_path = 'ingestion/src/schemas/trades.avsc'
-avro_schema = load_avro_schema(avro_schema_path)
-print(avro_schema)
-# Initialize Kafka Consumer
-# consumer_config = {
-#     'bootstrap_servers': kafka_broker,
+# Create logs directory if it doesn't exist
+if not os.path.exists("logs"):
+    os.makedirs("logs")
 
-    
-#         }
-# #consumer = KafkaConsumer(**consumer_config)
-# consumer  = KafkaConsumer(*kafka_topic, **consumer_config)
+# Logger setup
+def setup_logger():
+    logging.basicConfig(
+        filename="logs/consumer.log", 
+        level=logging.INFO, 
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    return logging.getLogger("ConsumerLogger")
 
-# Initialize Kafka Consumer with the correct configuration keys
-consumer = KafkaConsumer(
-    kafka_topic,
-    bootstrap_servers=kafka_broker,
-    value_deserializer=lambda x: x  # Do not decode; we'll use Avro decoding
-)
-print(consumer.poll())
-# Subscribe to the kafka topic 
-#print(consumer.subscribe(kafka_topic))
+logger = setup_logger()
 
-#for now we can include all messages from market kafka topic
 
-# try:
-#     print("Listening for messages...")
-#     while True:
-#         # Poll for messages
-#         msg_pack = consumer.poll(timeout_ms=1000)  # Poll for messages with 1-second timeout
-#         print(msg_pack)
-#         for tp, messages in msg_pack.items():
-#             for msg in messages:
-#                 # Raw message content
-#                 message_value = msg.value
-#                 print(f"Raw message: {message_value}")
+def main():
+    # Kafka Configuration
+    kafka_broker = 'localhost:9092'  # Update as necessary
+    kafka_topic = os.getenv('KAFKA_TOPIC', 'market')  # Default to 'market' if not set
 
-#                 # Decode the Avro-encoded message
-#                 try:
-#                     decoded_data = schemaless_reader(io.BytesIO(message_value), avro_schema)
-#                     print("Decoded message:", decoded_data)
-#                 except Exception as e:
-#                     print(f"Failed to decode message: {e}")
+    # Avro Schema path
+    avro_schema_path = "ingestion/src/schemas/trades.avsc"
 
-# Listening for messages
-print("Listening for messages...")
+    # Load Avro schema
+    avro_schema = load_avro_schema(avro_schema_path)
 
-try:
-    while True:
-         # Poll for messages
-         msg_pack = consumer.poll(timeout_ms=1000)  # Poll for messages with 1-second timeout
-         print(msg_pack)
-         for tp, messages in msg_pack.items():
-            for msg in consumer:
-                print(msg)
-                # Log raw Kafka message as bytes
-                message_value = msg.value
-                print(f"Raw message bytes: {message_value}")
-                # Decode the Avro-encoded message
-                try:
-                    decoded_data = schemaless_reader(io.BytesIO(message_value), avro_schema)
-                    print("Decoded message:", decoded_data)
-                except Exception as e:
-                    print(f"Failed to decode message: {e}")
+    # Initialize Kafka Consumer
+    consumer = KafkaConsumer(
+        kafka_topic,
+        bootstrap_servers=kafka_broker,
+        value_deserializer=lambda x: x  # Receive raw bytes
+    )
 
-except KeyboardInterrupt:
-    print("Stopping consumer...")
-finally:
-    # Clean up and close the consumer
-    consumer.close()
+    logger.info("Listening for messages...")
+
+    try:
+        for message in consumer:
+            # Log raw Kafka message as bytes
+            message_value = message.value
+            logger.info(f"Raw message bytes: {message_value}")
+
+            # Decode the Avro-encoded message
+            decoded_data = avro_decode(message_value, avro_schema)
+            if decoded_data:
+                print("Decoded message:", decoded_data)
+    except KeyboardInterrupt:
+        print("Stopping consumer...")
+    finally:
+        # Clean up and close the consumer
+        consumer.close()
+
+if __name__ == "__main__":
+    main()

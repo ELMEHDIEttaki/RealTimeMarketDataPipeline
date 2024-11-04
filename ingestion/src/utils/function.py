@@ -19,7 +19,7 @@ if not os.path.exists("logs"):
 # Logger setup
 def setup_logger():
     logging.basicConfig(
-        filename="logs/avro.log", 
+        filename="logs/app.log", 
         level=logging.INFO, 
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
@@ -33,18 +33,14 @@ def load_producer(kafka_server):
     return KafkaProducer(bootstrap_servers=kafka_server)
 
 def load_avro_schema(schema_path):
-    """Load and parse the Avro schema from file."""
-    # with open(schema_path, 'r') as schema_file:
-    #     return avro.schema.parse(schema_file.read())
-    return avro.schema.parse(open(schema_path).read())
-
-# def avro_encode(data, schema):
-#     """Encode a data dictionary into Avro format."""
-#     writer = avro.io.DatumWriter(schema)
-#     bytes_writer = io.BytesIO()
-#     encoder = avro.io.BinaryEncoder(bytes_writer)
-#     writer.write(data, encoder)
-#     return bytes_writer.getvalue()
+    """Load and parse the Avro schema from a file."""
+    try:
+        with open(schema_path, 'r') as schema_file:
+            schema = avro.schema.parse(schema_file.read())
+        return schema
+    except Exception as e:
+        logger.error(f"Failed to load Avro schema: {e}")
+        raise
 
 # Automate Message Adaptation
 def adapt_message_for_avro(message, expected_fields):
@@ -54,14 +50,7 @@ def adapt_message_for_avro(message, expected_fields):
             message[field] = None
     return message
 
-
-# def avro_encode(data, avro_schema):
-#     writer = avro.io.DatumWriter(avro_schema)
-#     bytes_writer = io.BytesIO()
-#     encoder = avro.io.BinaryEncoder(bytes_writer)
-#     writer.write(data, encoder)
-#     return bytes_writer.getvalue()
-
+# Encode data supported with avro schema
 def avro_encode(data, avro_schema):
     # Create a DatumWriter with the provided Avro schema
     writer = avro.io.DatumWriter(avro_schema)
@@ -78,24 +67,18 @@ def avro_encode(data, avro_schema):
     # Get the raw bytes
     avro_bytes = bytes_writer.getvalue()
     
-    #logger.info(f"AVRO_BYTES: {avro_bytes}")
-    
-    # # Now we need to decode it back to a dictionary
-    # bytes_reader = io.BytesIO(avro_bytes)
-    # logger.info(f"BYTES_READER: {bytes_reader}")
-    # decoder = avro.io.BinaryDecoder(bytes_reader)
-    # logger.info(f"AVRO_DECODER_BYTES: {decoder}")
-    # reader = avro.io.DatumReader(avro_schema)
-    # logger.info(f"AVRO_BYTES_READER: {reader}")
-    
-    # # Read and return the data as a dictionary
-    # decoded_data = reader.read(decoder)
-    # logger.info(f"decoded_data: {decoded_data}")
-    
     return avro_bytes
 
-    # bytes_writer = io.BytesIO()
-    # encoder = BinaryEncoder(bytes_writer)
-    # writer = DatumWriter(avro_schema)
-    # writer.write(data, encoder)
-    # return bytes_writer.getvalue()
+def avro_decode(avro_bytes, avro_schema):
+    """Decode Avro bytes into a dictionary."""
+    try:
+        bytes_reader = io.BytesIO(avro_bytes)
+        decoder = avro.io.BinaryDecoder(bytes_reader)
+        reader = avro.io.DatumReader(avro_schema)
+        decoded_data = reader.read(decoder)
+        logger.info(f"Decoded data: {decoded_data}")
+        return decoded_data
+    except Exception as e:
+        logger.error(f"Failed to decode message: {e}")
+        return None
+

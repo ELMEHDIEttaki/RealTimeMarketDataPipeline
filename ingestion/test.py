@@ -62,11 +62,14 @@ class TwelveDataPipeline:
 
     def send_to_kafka(self, topic, data):
         """Encode and send data to Kafka."""
-        encoded_data = avro_encode(data, self.avro_schema)
-        logger.info(f"Display encoded data content: {encoded_data}")
-        self.kafka_producer.send(topic, encoded_data)
-        self.kafka_producer.flush()
-        logger.info(f"Sent data to Kafka topic '{topic}'")
+        try:
+            encoded_data = avro_encode(data, self.avro_schema)
+            logger.info(f"Display encoded data content: {encoded_data}")
+            self.kafka_producer.send(topic, encoded_data)
+            self.kafka_producer.flush()
+            logger.info(f"Sent data to Kafka topic '{topic}'")
+        except Exception as e:
+            logger.error(f"Failed to send data to kafka: {e}")
 
     @staticmethod
     def on_event(event):
@@ -94,6 +97,8 @@ class TwelveDataPipeline:
             if message.get('event') == "price":
                 adapted_message = adapt_message_for_avro(message, expected_fields)
                 logger.info(f"selected price event with adaptation approach: {adapted_message}")
+                
+                # Encode and publish to Kafka
                 logger.info(f"Publishing... message: {adapted_message}")
                 self.send_to_kafka(topic=topic, data=message)
                 logger.info(f"sent message to kafka: {adapted_message}")
