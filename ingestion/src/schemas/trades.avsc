@@ -3,16 +3,63 @@
   "name": "PriceEvent",
   "namespace": "com.twelvedata",
   "fields": [
-    { "name": "event", "type": "string" },
-    { "name": "symbol", "type": "string" },
-    { "name": "currency_base", "type": "string" },
-    { "name": "currency_quote", "type": "string" },
-    { "name": "exchange", "type": "string" },
-    { "name": "type", "type": "string" },
-    { "name": "timestamp", "type": "long" },
-    { "name": "price", "type": "float" },
-    {"name": "bid", "type": ["null", "float"], "default": null},
-    {"name": "ask", "type": ["null", "float"], "default": null},
-    {"name": "day_volume", "type": ["null", "float"], "default": null}
+    { 
+      "name": "event", 
+      "type": "string",
+      "doc": "Type of event, 'price' for price updates"
+    },
+    { 
+      "name": "symbol", 
+      "type": "string",
+      "doc": "Trading symbol of the currency pair, 'BTC/USD'"
+    },
+    { 
+      "name": "currency_base", 
+      "type": "string",
+      "doc": "Base currency in the pair, e.g., 'Bitcoin' for BTC/USD"  
+    },
+    { 
+      "name": "currency_quote", 
+      "type": "string",
+      "doc": "Quote currency in the pair, e.g., 'US Dollar' for BTC/USD"
+    },
+    { 
+      "name": "exchange", 
+      "type": "string",
+      "doc": "Name of the exchange providing the price data" 
+    },
+    { 
+      "name": "type", 
+      "type": "string",
+      "doc": "Type of asset, ex: 'Digital Currency'" 
+    },
+    { 
+      "name": "timestamp", 
+      "type": "long",
+      "doc": "Unix Timestamp of the price event" 
+    },
+    { 
+      "name": "price", 
+      "type": "float",
+      "doc": "Current price of the currency pair" 
+    },
+    {
+      "name": "bid", 
+      "type": ["null", "float"], 
+      "default": null,
+      "doc": "Current bid price; optional for some pairs"
+    },
+    {
+      "name": "ask", 
+      "type": ["null", "float"], 
+      "default": null,
+      "doc": "Current ask price; optional for some pairs"
+    },
+    {
+      "name": "day_volume", 
+      "type": ["null", "float"], 
+      "default": null,
+      "doc": "Volume traded over the day; optional for some pairs"
+    }
   ]
 }
