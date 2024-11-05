@@ -32,17 +32,23 @@ The development of this pipeline is organized into several sprints, each focusin
 -  Implement the TwelveData-Producer service for data ingestion.
 -  Define Avro schema and integrate Avro encoding.
 -  Dockerize the TwelveData-Producer service.
+
 **Sprint 2: Kafka Message Broker and UI Management.**
 -  Configure Kafka and Zookeeper, set up topics, and integrate with Kadrop UI.
 -  Test producer-consumer data flow in Kafka.
+
 **Sprint 3: Stream Processing with Apache Spark on Kubernetes.**
 -  Deploy Spark on Kubernetes, connect Spark to Kafka, and process data for storage in Cassandra.
+
 **Sprint 4: Database Setup and Integration with Cassandra.**
 -  Set up Cassandra on Kubernetes, define keyspaces and tables, and integrate with Spark.
+
 **Sprint 5: Visualization with Grafana.**
 -  Configure Grafana with Cassandra as the data source, and design initial dashboards for real-time data monitoring.
+
 **Sprint 6: Testing, Monitoring, and User Feedback.**
 -  Conduct end-to-end testing, set up monitoring, and gather user feedback to enhance the dashboards.
+
 ## **Development and Task Tracking**
 To keep track of the development process, we are using Trello to organize tasks, monitor sprint progress, and track issue resolution. Visit our Trello board here for an overview of ongoing and completed tasks:
 
