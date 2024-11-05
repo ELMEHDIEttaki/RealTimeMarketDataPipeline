@@ -1,12 +1,6 @@
-#import io
-#import avro.schema
-# from avro.io import DatumWriter, BinaryEncoder
-# import avro.io
-# import avro.schema
 import io
 import avro.schema
 import avro.io
-import json
 from kafka import KafkaProducer
 import logging
 import os

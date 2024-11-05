@@ -4,4 +4,7 @@
 /.env
 /logs/app.log
 /logs/avro.log
+/test_kafka.py
+/test.py
+
 
