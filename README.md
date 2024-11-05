@@ -25,41 +25,28 @@ This repository will provides all the code, configuration, and instructions need
 
 ---
 
-## **Project Structure**
-The project is organized into the following directories:
+## **Sprint Overview**
+The development of this pipeline is organized into several sprints, each focusing on a specific part of the system.
 
-```
-MarketDataStreamPipeline/
-│
-├── ingestion/
-│   ├── twelve_data_producer.py      # Python producer to ingest data from TwelveData API
-│   ├── config.json                  # Configuration file for producer settings
-│   └── Dockerfile                   # Dockerfile to containerize the producer
-│
-├── message-broker/
-│   ├── kafka/
-│   │   ├── docker-compose.yml       # Docker Compose file for Kafka and Zookeeper
-│   │   └── config/                  # Kafka configuration files
-│   └── kafdrop/                     # Kafdrop UI for Kafka monitoring
-│
-├── stream-processing/
-│   ├── stream_processor.py    # Spark code for processing Kafka streams
-│   └── Dockerfile                   # Dockerfile for Spark container
-│
-├── database/
-│   ├── cassandra-setup.cql          # Script to initialize Cassandra keyspaces and tables
-│   └── Dockerfile                   # Dockerfile for Cassandra container
-│
-├── visualization/
-│   ├── grafana/
-│   │   └── dashboard.js             # Grafana dashboard configuration
-│   └── Dockerfile                   # Dockerfile for Grafana
-│
-├── infrastructure/
-│   ├── terraform/                   # Terraform scripts for infrastructure setup
-│   └── kubernetes/                  # Kubernetes deployment files
-│
-└── README.md                        # Project documentation
-```
+**Sprint 1: **Data Source and Ingestion Setup.**
+-  Implement the TwelveData-Producer service for data ingestion.
+-  Define Avro schema and integrate Avro encoding.
+-  Dockerize the TwelveData-Producer service.
+**Sprint 2: Kafka Message Broker and UI Management**
+-  Configure Kafka and Zookeeper, set up topics, and integrate with Kadrop UI.
+-  Test producer-consumer data flow in Kafka.
+**Sprint 3: Stream Processing with Apache Spark on Kubernetes**
+-  Deploy Spark on Kubernetes, connect Spark to Kafka, and process data for storage in Cassandra.
+**Sprint 4: Database Setup and Integration with Cassandra**
+-  Set up Cassandra on Kubernetes, define keyspaces and tables, and integrate with Spark.
+**Sprint 5: Visualization with Grafana**
+-  Configure Grafana with Cassandra as the data source, and design initial dashboards for real-time data monitoring.
+**Sprint 6: Testing, Monitoring, and User Feedback**
+-  Conduct end-to-end testing, set up monitoring, and gather user feedback to enhance the dashboards.
+## **Development and Task Tracking**
+To keep track of the development process, we are using Trello to organize tasks, monitor sprint progress, and track issue resolution. Visit our Trello board here for an overview of ongoing and completed tasks:
+
+🔗 Real-Time Market Data Pipeline SCRUM Board
+https://trello.com/invite/b/67295dd5282fe5b6b398317e/ATTI4851f55e62f0730b0a50896302ed33c9CC25B5E4/real-time-market-data-pipeline-scrum
 
 ---
