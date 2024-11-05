@@ -2,7 +2,8 @@
   "type": "record",
   "name": "PriceEvent",
   "namespace": "com.twelvedata",
-  "fields": [
+  "fields": 
+  [
     { 
       "name": "event", 
       "type": "string",
