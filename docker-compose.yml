@@ -86,3 +86,5 @@ volumes:
     driver: local
   kafdrop_data:
     driver: local
+  producer_data:
+    driver: local
