@@ -4,15 +4,7 @@ import logging
 from twelvedata import TDClient  # Replace with the actual TwelveData client library if different
 from dotenv import load_dotenv
 from utils.function import (load_producer, load_avro_schema, 
-                                avro_encode, adapt_message_for_avro)
-
-# Setup environment variables
-env_file = '.env'
-load_dotenv(env_file, override=True)
-
-# Create logs directory if it doesn't exist
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+                            avro_encode, adapt_message_for_avro)
 
 # Logger setup
 def setup_logger():
@@ -24,6 +16,18 @@ def setup_logger():
     return logging.getLogger("AppLogger")
 
 logger = setup_logger()
+
+# Create logs directory if it doesn't exist
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+
+# Setup environment variables
+env_file = '.env'
+load_dotenv(env_file, override=True)
+
+logger.info(f"environement varaibles: {env_file}")
+
+
 
 class TwelveDataPipeline:
     def __init__(self, api_token, kafka_server, schema_path):
@@ -109,7 +113,7 @@ if __name__ == "__main__":
     # Load configurations from environment
     API_TOKEN = os.getenv('API_TOKEN')
     logger.info(f"API-TOKEN : {API_TOKEN}")
-    KAFKA_SERVER = "localhost:9092"
+    KAFKA_SERVER = os.getenv('BROKER_URL')
     SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
     KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
     logger.info(f"KAFKA TOPIC NAME : {KAFKA_TOPIC}")

@@ -1,7 +1,7 @@
 /notes.txt
 /Architecture.png
 /env
-/.env
+/ingestion/.env
 /logs/app.log
 /logs/avro.log
 /test_kafka.py
