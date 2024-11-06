@@ -27,3 +27,4 @@ twelvedata==1.2.24
 tzdata==2024.2
 urllib3==2.2.3
 websocket-client==1.8.0
+dotenv

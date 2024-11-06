@@ -57,15 +57,28 @@ services:
       - "kafdrop_data:/obsidiandynamics"
   
   producer:
-    image: docker.io/library/twelvedata-producer:latest
-    restart: "no"
     networks:
       - ecosystem
     ports:
       - "8001:8001"
+    build:
+      context : .
+      dockerfile: ingestion/Dockerfile
+    container_name: twelve_data_producer
+    env_file:
+      - .env
     depends_on:
       - kafka
+    command: ["python3", "ingestion/src/twelve_data_producer.py"]
 
+    # image: docker.io/library/twelvedata-producer:latest
+    # restart: "no"
+    # networks:
+    #   - ecosystem
+    # ports:
+    #   - "8001:8001"
+    # depends_on:
+    #   - kafka
 volumes:
   zookeeper_data:
     driver: local

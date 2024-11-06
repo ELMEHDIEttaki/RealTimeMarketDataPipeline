@@ -25,9 +25,6 @@ if not os.path.exists("logs"):
 env_file = '.env'
 load_dotenv(env_file, override=True)
 
-logger.info(f"environement varaibles: {env_file}")
-
-
 
 class TwelveDataPipeline:
     def __init__(self, api_token, kafka_server, schema_path):
