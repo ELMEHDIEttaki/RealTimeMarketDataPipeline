@@ -9,6 +9,6 @@ COPY . .
 
 RUN pip install --upgrade pip
 
-RUN pip install -r ingestion/requirements.txt
+RUN pip install -r requirements.txt
 
-CMD ["python3","ingestion/src/twelve_data_producer.py"]
+CMD ["python3","src/twelve_data_producer.py"]
