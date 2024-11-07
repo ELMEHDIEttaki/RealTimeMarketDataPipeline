@@ -27,6 +27,10 @@ load_dotenv(env_file, override=True)
 
 
 class TwelveDataPipeline:
+    print('Environment:')
+    for k, v in os.environ.items():
+        print(f'{k}={v}')
+    
     def __init__(self, api_token, kafka_server, schema_path):
         self.api_token = api_token
         self.kafka_server = kafka_server

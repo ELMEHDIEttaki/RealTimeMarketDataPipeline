@@ -21,6 +21,9 @@ def setup_logger():
 
 logger = setup_logger()
 
+print('Environment:')
+for k, v in os.environ.items():
+    print(f'{k}={v}')
 
 def load_producer(kafka_server):
     """Initialize Kafka producer."""
