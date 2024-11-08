@@ -6,6 +6,12 @@ from dotenv import load_dotenv
 from utils.function import (load_producer, load_avro_schema, 
                             avro_encode, adapt_message_for_avro)
 
+
+
+# Create logs directory if it doesn't exist
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+
 # Logger setup
 def setup_logger():
     logging.basicConfig(
@@ -17,9 +23,6 @@ def setup_logger():
 
 logger = setup_logger()
 
-# Create logs directory if it doesn't exist
-if not os.path.exists("logs"):
-    os.makedirs("logs")
 
 # Setup environment variables
 env_file = '.env'

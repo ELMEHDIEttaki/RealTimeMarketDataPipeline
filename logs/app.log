@@ -5991,3 +5991,15 @@ ConnectionResetError: [Errno 104] Connection reset by peer
 2024-11-06 05:09:33,096 - kafka.conn - ERROR - Connect attempt to <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]> returned error 111. Disconnecting.
 2024-11-06 05:09:33,097 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
 2024-11-06 05:09:33,097 - kafka.client - WARNING - Node 1 connection failed -- refreshing metadata
+2024-11-08 15:15:34,611 - AppLogger - INFO - API-TOKEN : None
+2024-11-08 15:15:34,611 - AppLogger - INFO - KAFKA_SERVER : None
+2024-11-08 15:15:34,611 - AppLogger - INFO - KAFKA TOPIC NAME : None
+2024-11-08 15:26:38,771 - AppLogger - INFO - API-TOKEN : None
+2024-11-08 15:26:38,771 - AppLogger - INFO - KAFKA_SERVER : None
+2024-11-08 15:26:38,771 - AppLogger - INFO - KAFKA TOPIC NAME : None
+2024-11-08 15:27:19,484 - AppLogger - INFO - API-TOKEN : None
+2024-11-08 15:27:19,484 - AppLogger - INFO - KAFKA_SERVER : None
+2024-11-08 15:27:19,484 - AppLogger - INFO - KAFKA TOPIC NAME : None
+2024-11-08 15:41:57,694 - AppLogger - INFO - API-TOKEN : None
+2024-11-08 15:41:57,694 - AppLogger - INFO - KAFKA_SERVER : None
+2024-11-08 15:41:57,694 - AppLogger - INFO - KAFKA TOPIC NAME : None
