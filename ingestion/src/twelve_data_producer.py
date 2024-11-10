@@ -2,11 +2,9 @@ import time
 import os
 import logging
 from twelvedata import TDClient  # Replace with the actual TwelveData client library if different
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 from utils.function import (load_producer, load_avro_schema, 
                             avro_encode, adapt_message_for_avro)
-
-
 
 # Create logs directory if it doesn't exist
 if not os.path.exists("logs"):
@@ -25,8 +23,9 @@ logger = setup_logger()
 
 
 # Setup environment variables
-env_file = '.env'
-load_dotenv(env_file, override=True)
+path_file = "ingestion/.env"
+#env_file = find_dotenv()
+load_dotenv(path_file, override=True)
 
 
 class TwelveDataPipeline:
