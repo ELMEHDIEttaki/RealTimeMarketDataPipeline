@@ -54,20 +54,20 @@ services:
       - kafka
     volumes:
       - "kafdrop_data:/obsidiandynamics"
-  producer:
-    networks:
-      - ecosystem
-    ports:
-      - "8001:8001"
-    build:
-      context : ./ingestion
-      dockerfile: Dockerfile
-    container_name: twelvedata_producer
-    env_file:
-      - ./ingestion/.env
-    depends_on:
-      - kafka
-    command: ["python3", "src/twelve_data_producer.py"]
+  # producer:
+  #   networks:
+  #     - ecosystem
+  #   ports:
+  #     - "8001:8001"
+  #   build:
+  #     context : ./ingestion
+  #     dockerfile: Dockerfile
+  #   container_name: twelvedata_producer
+  #   env_file:
+  #     - ./ingestion/.env
+  #   depends_on:
+  #     - kafka
+  #   command: ["python3", "src/twelve_data_producer.py"]
 volumes:
   zookeeper_data:
     driver: local
@@ -75,5 +75,5 @@ volumes:
     driver: local
   kafdrop_data:
     driver: local
-  producer_data:
-    driver: local
+  # producer_data:
+  #   driver: local

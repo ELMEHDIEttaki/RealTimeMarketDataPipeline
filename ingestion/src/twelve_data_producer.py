@@ -118,7 +118,7 @@ if __name__ == "__main__":
     logger.info(f"API-TOKEN : {API_TOKEN}")
     KAFKA_SERVER = os.getenv('BROKER_URL')
     logger.info(f"KAFKA_SERVER : {KAFKA_SERVER}")
-    SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
+    SCHEMA_PATH = "src/schemas/trades.avsc"
     KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
     logger.info(f"KAFKA TOPIC NAME : {KAFKA_TOPIC}")
 

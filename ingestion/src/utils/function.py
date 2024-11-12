@@ -28,6 +28,7 @@ logger = setup_logger()
 def load_producer(kafka_server):
     """Initialize Kafka producer."""
     return KafkaProducer(bootstrap_servers=kafka_server)
+    
 def load_avro_schema(schema_path):
     """Load and parse the Avro schema from a file."""
     try:

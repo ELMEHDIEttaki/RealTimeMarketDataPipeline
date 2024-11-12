@@ -1,7 +1,7 @@
 FROM python:3.10.12
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /ingestion
 
 # Copy the entire project directory into the container
 
