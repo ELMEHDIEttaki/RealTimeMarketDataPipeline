@@ -7,23 +7,22 @@ import os
 
 
 # Create logs directory if it doesn't exist
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+# if not os.path.exists("logs"):
+#     os.makedirs("logs")
 
 # Logger setup
-def setup_logger():
-    logging.basicConfig(
-        filename="logs/app.log", 
-        level=logging.INFO, 
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-    return logging.getLogger("AppLogger")
+# def setup_logger():
+#     logging.basicConfig(
+#         filename="logs/app.log", 
+#         level=logging.INFO, 
+#         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+#     )
+#     return logging.getLogger("AppLogger")
 
-logger = setup_logger()
+# logger = setup_logger()
 
-# print('Environment:')
-# for k, v in os.environ.items():
-#     print(f'{k}={v}')
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def load_producer(kafka_server):
     """Initialize Kafka producer."""

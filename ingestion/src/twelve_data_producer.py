@@ -7,23 +7,28 @@ from utils.function import (load_producer, load_avro_schema,
                             avro_encode, adapt_message_for_avro)
 
 # Create logs directory if it doesn't exist
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+
+# if not os.path.exists("logs"):
+#     os.makedirs("logs")
 
 # Logger setup
-def setup_logger():
-    logging.basicConfig(
-        filename="logs/app.log", 
-        level=logging.INFO, 
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
-    return logging.getLogger("AppLogger")
 
-logger = setup_logger()
+# def setup_logger():
+#     logging.basicConfig(
+#         filename="logs/app.log", 
+#         level=logging.INFO, 
+#         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+#     )
+#     return logging.getLogger("AppLogger")
 
+# logger = setup_logger()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Setup environment variables
-path_file = "ingestion/.env"
+path_file = ".env"
 #env_file = find_dotenv()
 load_dotenv(path_file, override=True)
 
@@ -118,7 +123,7 @@ if __name__ == "__main__":
     logger.info(f"API-TOKEN : {API_TOKEN}")
     KAFKA_SERVER = os.getenv('BROKER_URL')
     logger.info(f"KAFKA_SERVER : {KAFKA_SERVER}")
-    SCHEMA_PATH = "src/schemas/trades.avsc"
+    SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
     KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
     logger.info(f"KAFKA TOPIC NAME : {KAFKA_TOPIC}")
 

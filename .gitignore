@@ -5,5 +5,7 @@
 /logs/avro.log
 /test_kafka.py
 /test.py
+/.env
+
 
 
