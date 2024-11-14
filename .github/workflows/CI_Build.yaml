@@ -1,6 +1,6 @@
 # .github/workflows/CI_Build.yml
 
-name: CI Pipeline for Producer, Kafka-Zookeeper Infrastructure
+name: Terraform CI Pipeline
 
 on:
   push:
@@ -15,23 +15,20 @@ jobs:
     name: Terraform Apply
     runs-on: ubuntu-latest
 
-    env:
-      TF_LOG: INFO
-      TF_INPUT: false
-
     steps:
       # Checkout repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       # Set up Terraform
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.5.6  # Specify the required Terraform version
 
       # Terraform Init
-      - name: Terraform Init
+      - name: Terraform Initialization
+        working-directory: ./k8s-terraform
         run: terraform init
 
       # Terraform Validate
@@ -39,15 +36,22 @@ jobs:
         run: terraform validate
 
       # Terraform Plan
-      - name: Terraform Plan
+      - name: Run Terraform Plan
         id: plan
+        working-directory: ./k8s-terraform
         run: terraform plan -out=tfplan
-        continue-on-error: false
+        env:
+          TF_LOG: INFO
+          TF_INPUT: false
 
       # Apply Terraform configuration if on main branch or if approved
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
+      - name: Run Terraform Apply
+        working-directory: ./k8s-terraform
+        if: github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
+        env:
+          TF_LOG: INFO
+          TF_INPUT: false
 
       # Output URLs for services (optional)
       - name: Output Service URLs

@@ -16,4 +16,5 @@ resource "kubernetes_service" "producer" {
       port        = 8001
       target_port = 8001
     }
-
+}
+}
