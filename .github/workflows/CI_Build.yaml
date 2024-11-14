@@ -1,0 +1,58 @@
+# .github/workflows/CI_Build.yml
+
+name: CI Pipeline for Producer, Kafka-Zookeeper Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    env:
+      TF_LOG: INFO
+      TF_INPUT: false
+
+    steps:
+      # Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6  # Specify the required Terraform version
+
+      # Terraform Init
+      - name: Terraform Init
+        run: terraform init
+
+      # Terraform Validate
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Terraform Plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
+        continue-on-error: false
+
+      # Apply Terraform configuration if on main branch or if approved
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
+
+      # Output URLs for services (optional)
+      - name: Output Service URLs
+        run: |
+          echo "Producer Service URL: $(terraform output -raw producer_service_url)"
+          echo "Kafka Service URL: $(terraform output -raw kafka_service_url)"
+          echo "Zookeeper Service URL: $(terraform output -raw zookeeper_service_url)"
+          echo "Kafdrop Service URL: $(terraform output -raw kafdrop_service_url)"
