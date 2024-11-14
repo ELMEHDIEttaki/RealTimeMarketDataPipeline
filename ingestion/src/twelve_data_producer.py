@@ -28,9 +28,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Setup environment variables
-path_file = ".env"
-#env_file = find_dotenv()
-load_dotenv(path_file, override=True)
+
+# path_file = ".env"
+# #env_file = find_dotenv()
+# load_dotenv(path_file, override=True)
 
 
 class TwelveDataPipeline:
@@ -123,9 +124,10 @@ if __name__ == "__main__":
     logger.info(f"API-TOKEN : {API_TOKEN}")
     KAFKA_SERVER = os.getenv('BROKER_URL')
     logger.info(f"KAFKA_SERVER : {KAFKA_SERVER}")
-    SCHEMA_PATH = "ingestion/src/schemas/trades.avsc"
     KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
     logger.info(f"KAFKA TOPIC NAME : {KAFKA_TOPIC}")
+
+    SCHEMA_PATH = "src/schemas/trades.avsc"
 
     # Set tickers and initialize message storage
     tickers = ['BTC/USD', 'ETH/BTC', 'AAPL']

@@ -54,20 +54,25 @@ services:
       - kafka
     volumes:
       - "kafdrop_data:/obsidiandynamics"
-  # producer:
-  #   networks:
-  #     - ecosystem
-  #   ports:
-  #     - "8001:8001"
-  #   build:
-  #     context : ./ingestion
-  #     dockerfile: Dockerfile
-  #   container_name: twelvedata_producer
-  #   env_file:
-  #     - ./ingestion/.env
-  #   depends_on:
-  #     - kafka
-  #   command: ["python3", "src/twelve_data_producer.py"]
+  producer:
+    networks:
+      - ecosystem
+    ports:
+      - "8001:8001"
+    restart: "on-failure"
+    build:
+      context : ./ingestion
+      dockerfile: Dockerfile
+    container_name: twelvedata_producer
+    # env_file:
+    #   - ./ingestion/.env
+    environment:
+      - BROKER_URL=kafka:29092
+      - API_TOKEN=
+      - KAFKA_TOPIC=market
+    depends_on:
+      - kafka
+    #command: ["python3", "src/twelve_data_producer.py"]
 volumes:
   zookeeper_data:
     driver: local
