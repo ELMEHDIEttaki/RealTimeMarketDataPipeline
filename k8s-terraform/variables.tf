@@ -42,9 +42,14 @@ variable "kafka_topic" {
 }
 
 # Output the Kafdrop Service URL
+# output "kafdrop_service_url" {
+#   description = "URL to access the Kafdrop service for monitoring Kafka topics"
+#   value       = module.kafdrop.status.load_balancer[0].ingress[0].hostname
+#   depends_on  = [kubernetes_service.kafdrop]
+# }
+
 output "kafdrop_service_url" {
   description = "URL to access the Kafdrop service for monitoring Kafka topics"
-  value       = kubernetes_service.kafdrop.status.load_balancer[0].ingress[0].hostname
-  depends_on  = [kubernetes_service.kafdrop]
+  value       = module.kafdrop.kubernetes_service.kafdrop.status.load_balancer[0].ingress[0].hostname
+  depends_on  = [module.kafdrop.kubernetes_service.kafdrop]
 }
-

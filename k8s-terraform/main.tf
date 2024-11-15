@@ -5,6 +5,7 @@ provider "kubernetes" {
   config_path = var.kubeconfig_path
 }
 
+
 # Zookeeper Deployment
 module "zookeeper" {
   source = "./zookeeper"
@@ -18,6 +19,7 @@ module "kafka" {
 # Kafdrop Deployment
 module "kafdrop" {
   source = "./kafdrop"
+  namespace = var.namespace
 }
 
 # Producer Deployment

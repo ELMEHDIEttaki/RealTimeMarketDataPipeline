@@ -2,7 +2,6 @@
 resource "kubernetes_deployment" "kafdrop" {
   metadata {
     name = "kafdrop"
-    namespace = var.namespace
     labels = {
       app = "kafdrop"
     }
