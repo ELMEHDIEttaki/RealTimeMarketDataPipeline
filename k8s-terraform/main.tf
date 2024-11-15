@@ -19,7 +19,7 @@ module "kafka" {
 # Kafdrop Deployment
 module "kafdrop" {
   source = "./kafdrop"
-  namespace = var.namespace
+  #namespace = var.namespace
 }
 
 # Producer Deployment
