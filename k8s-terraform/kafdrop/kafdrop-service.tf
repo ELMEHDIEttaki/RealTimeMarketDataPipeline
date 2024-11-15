@@ -22,7 +22,7 @@
 resource "kubernetes_service" "kafdrop" {
   metadata {
     name      = "kafdrop-service"
-    namespace = variables.namespace
+    namespace = var.namespace
   }
 
   spec {
