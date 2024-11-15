@@ -35,6 +35,34 @@ resource "kubernetes_deployment" "kafka" {
             value = "zookeeper:2181"
           }
           # Other necessary environment variables
+          env {
+            name  = "KAFKA_LISTENERS"
+            value = "INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092"
+          }
+          env {
+            name  = "KAFKA_ADVERTISED_LISTENERS"
+            value = "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+          }
+          env {
+            name  = "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP"
+            value = "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+          }
+          env {
+            name  = "KAFKA_INTER_BROKER_LISTENER_NAME"
+            value = "INTERNAL"
+          }
+          env {
+            name  = "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR"
+            value = "1"
+          }
+          env {
+            name  = "KAFKA_TRANSACTION_STATE_LOG_MIN_ISR"
+            value = "1"
+          }
+          env {
+            name  = "KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR"
+            value = "1"
+          }
         }
       }
     }

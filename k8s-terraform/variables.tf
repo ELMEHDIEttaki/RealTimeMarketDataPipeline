@@ -4,6 +4,7 @@
 variable "kubeconfig_path" {
   description = "Path to kubeconfig file"
   type        = string
+  default     = "~/.kube/config"
 }
 
 # Kubernetes namespace for the deployments
@@ -30,6 +31,7 @@ variable "zookeeper_image" {
 variable "api_token" {
   description = "API token for producer"
   type        = string
+  default     = "ff11a5aec4414ee9b6db5c6d1053d14f"
 }
 
 # Kafka Topic

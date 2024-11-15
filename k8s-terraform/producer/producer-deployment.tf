@@ -21,8 +21,8 @@ resource "kubernetes_deployment" "producer" {
       }
       spec {
         container {
-          name  = "producer"
-          image = "your-docker-image"  # Replace with the actual image name
+          name  = "twelvedata-producer"
+          image = "producer"  # Replace with the actual image name
           port {
             container_port = 8001
           }
@@ -32,7 +32,7 @@ resource "kubernetes_deployment" "producer" {
           }
           env {
             name  = "API_TOKEN"
-            value = "your_api_token"
+            value = "ff11a5aec4414ee9b6db5c6d1053d14f"
           }
           env {
             name  = "KAFKA_TOPIC"
