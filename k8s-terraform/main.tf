@@ -48,22 +48,22 @@ resource "kubernetes_namespace" "ecosystem" {
 
 # Zookeeper Deployment
 module "zookeeper" {
-  source = "./zookeeper"
+  source = ".zookeeper"
 }
 
 # Kafka Deployment
 module "kafka" {
-  source = "./kafka"
+  source = ".kafka"
 }
 
 # Kafdrop Deployment
 module "kafdrop" {
-  source = "./kafdrop"
+  source = ".kafdrop"
   #namespace = var.namespace
 }
 
 # Producer Deployment
 module "producer" {
-  source = "./producer"
+  source = ".producer"
 }
 
