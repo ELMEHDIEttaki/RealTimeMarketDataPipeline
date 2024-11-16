@@ -48,22 +48,22 @@ resource "kubernetes_namespace" "ecosystem" {
 
 # Zookeeper Deployment
 module "zookeeper" {
-  source = ".zookeeper"
+  source = "k8s-terraform/zookeeper.tf"
 }
 
 # Kafka Deployment
 module "kafka" {
-  source = ".kafka"
+  source = "k8s-terraform/kafka.tf"
 }
 
 # Kafdrop Deployment
 module "kafdrop" {
-  source = ".kafdrop"
+  source = "k8s-terraform/kafdrop.tf"
   #namespace = var.namespace
 }
 
 # Producer Deployment
 module "producer" {
-  source = ".producer"
+  source = "k8s-terraform/producer.tf"
 }
 
