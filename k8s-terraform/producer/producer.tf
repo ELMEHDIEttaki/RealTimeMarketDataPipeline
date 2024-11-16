@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "producer" {
       spec {
         container {
           name  = "twelvedata-producer"
-          image = "producer"  # Replace with the actual image name
+          image = "producer:latest"  # Replace with the actual image name
           port {
             container_port = 8001
           }
