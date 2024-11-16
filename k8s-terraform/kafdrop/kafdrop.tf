@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "kafdrop" {
       spec {
         container {
           name  = "kafdrop"
-          image = var.kafdrop_image
+          image = "var.kafdrop_image"
           port {
             container_port = 9000
           }
