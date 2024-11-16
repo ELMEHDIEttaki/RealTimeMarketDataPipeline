@@ -1,4 +1,4 @@
-# kafka/kafka-deployment.tf
+# kafka/kafka-deployment
 resource "kubernetes_deployment" "kafka" {
   metadata {
     name = "kafka"
@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "kafka" {
       spec {
         container {
           name  = "kafka"
-          image = "docker.io/bitnami/kafka:latest"
+          image = var.kafka_image
           port {
             container_port = 9092
           }
@@ -65,6 +65,22 @@ resource "kubernetes_deployment" "kafka" {
           }
         }
       }
+    }
+  }
+}
+
+# kafka/kafka-service
+resource "kubernetes_service" "kafka" {
+  metadata {
+    name = "kafka"
+  }
+  spec {
+    selector = {
+      app = "kafka"
+    }
+    port {
+      port        = 9092
+      target_port = 9092
     }
   }
 }

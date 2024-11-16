@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "kafdrop" {
       spec {
         container {
           name  = "kafdrop"
-          image = "docker.io/obsidiandynamics/kafdrop:latest"
+          image = var.kafdrop_image
           port {
             container_port = 9000
           }
@@ -32,6 +32,26 @@ resource "kubernetes_deployment" "kafdrop" {
           }
         }
       }
+    }
+  }
+}
+
+
+resource "kubernetes_service" "kafdrop" {
+  metadata {
+    name      = "kafdrop-service"
+  }
+
+  spec {
+    selector = {
+      app = "kafdrop"
+    }
+
+    type = "LoadBalancer"
+
+    port {
+      port        = 9000
+      target_port = 9000
     }
   }
 }

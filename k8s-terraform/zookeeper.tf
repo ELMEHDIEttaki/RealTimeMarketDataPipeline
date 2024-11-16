@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "zookeeper" {
       spec {
         container {
           name  = "zookeeper"
-          image = "docker.io/bitnami/zookeeper:3.9"
+          image = var.zookeeper_image
           port {
             container_port = 2181
           }
@@ -36,6 +36,23 @@ resource "kubernetes_deployment" "zookeeper" {
           }
         }
       }
+    }
+  }
+}
+
+
+# zookeeper/zookeeper-service.tf
+resource "kubernetes_service" "zookeeper" {
+  metadata {
+    name = "zookeeper"
+  }
+  spec {
+    selector = {
+      app = "zookeeper"
+    }
+    port {
+      port        = 2181
+      target_port = 2181
     }
   }
 }
