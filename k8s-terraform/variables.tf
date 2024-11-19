@@ -15,23 +15,23 @@ variable "namespace" {
 }
 
 # Kafka and Zookeeper Image Versions
-#variable "kafka_image" {
-#  description = "Docker image for Kafka"
-#  type        = string
-#  default     = "docker.io/bitnami/kafka:latest"
-#}
+variable "kafka_image" {
+  description = "Docker image for Kafka"
+  type        = string
+  default     = "docker.io/bitnami/kafka:latest"
+}
 
-#variable "zookeeper_image" {
-#  description = "Docker image for Zookeeper"
-#  type        = string
-#  #default     = "docker.io/bitnami/zookeeper:3.9"
-# }
+variable "zookeeper_image" {
+  description = "Docker image for Zookeeper"
+  type        = string
+  default     = "docker.io/bitnami/zookeeper:3.9"
+}
 
-#variable "kafdrop_image" {
-#  description = "Kafdrop Image for kafka monitoring"
-#  type        = string
-#  default     = "docker.io/obsidiandynamics/kafdrop:latest"  
-#}
+variable "kafdrop_image" {
+  description = "Kafdrop Image for kafka monitoring"
+  type        = string
+  default     = "docker.io/obsidiandynamics/kafdrop:latest"  
+}
 
 # Producer API Token
 #variable "api_token" {

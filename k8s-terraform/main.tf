@@ -49,17 +49,19 @@ resource "kubernetes_namespace" "ecosystem" {
 # Zookeeper Deployment
 module "zookeeper" {
   source = "./zookeeper"
+  zookeeper_image = var.zookeeper_image
 }
 
 # Kafka Deployment
 module "kafka" {
   source = "./kafka"
+  kafka_image = var.kafka_image
 }
 
 # Kafdrop Deployment
 module "kafdrop" {
   source = "./kafdrop"
-  #namespace = var.namespace
+  kafdrop_image = var.kafdrop_image
 }
 
 # Producer Deployment

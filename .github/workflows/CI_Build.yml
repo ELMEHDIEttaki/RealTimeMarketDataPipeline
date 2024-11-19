@@ -40,9 +40,9 @@ jobs:
         working-directory: ./k8s-terraform
         run: terraform plan -out=tfplan
         env:
-          TF_VAR_kafka_image: docker.io/bitnami/kafka:latest
-          TF_VAR_zookeeper_image: docker.io/bitnami/zookeeper:3.9
-          TF_VAR_kafdrop_image: docker.io/obsidiandynamics/kafdrop:latest
+          # TF_VAR_kafka_image: docker.io/bitnami/kafka:latest
+          # TF_VAR_zookeeper_image: docker.io/bitnami/zookeeper:3.9
+          # TF_VAR_kafdrop_image: docker.io/obsidiandynamics/kafdrop:latest
           TF_LOG: INFO
           TF_INPUT: false
 
