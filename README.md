@@ -14,7 +14,7 @@ This repository will provides all the code, configuration, and instructions need
 ---
 
 ## **Architecture**
-![Architecture](Architecture.png)
+![Architecture](Twelvedata_Pipeline_Architecture-Page-1.svg)
 ### **Data Flow**
 1. **Ingestion**: The pipeline ingests real-time data from the TwelveData WebSocket API using a custom Python producer.
 2. **Message Broker**: Kafka acts as the message broker, handling data distribution between ingestion and processing stages.
