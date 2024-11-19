@@ -1,4 +1,10 @@
 # kafka/kafka-deployment
+variable "kafka_image" {
+  description = "Docker image for Kafka"
+  type        = string
+  default     = "docker.io/bitnami/kafka:latest"
+}
+
 resource "kubernetes_deployment" "kafka" {
   metadata {
     name = "kafka"

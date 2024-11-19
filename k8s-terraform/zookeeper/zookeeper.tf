@@ -1,4 +1,10 @@
 # zookeeper/zookeeper-deployment.tf
+variable "zookeeper_image" {
+  description = "Docker image for Zookeeper"
+  type        = string
+  #default     = "docker.io/bitnami/zookeeper:3.9"
+}
+
 resource "kubernetes_deployment" "zookeeper" {
   metadata {
     name = "zookeeper"

@@ -15,38 +15,37 @@ variable "namespace" {
 }
 
 # Kafka and Zookeeper Image Versions
-variable "kafka_image" {
-  description = "Docker image for Kafka"
-  type        = string
-  #default     = "docker.io/bitnami/kafka:latest"
-}
+#variable "kafka_image" {
+#  description = "Docker image for Kafka"
+#  type        = string
+#  default     = "docker.io/bitnami/kafka:latest"
+#}
 
-variable "zookeeper_image" {
-  description = "Docker image for Zookeeper"
-  type        = string
-  #default     = "docker.io/bitnami/zookeeper:3.9"
-}
+#variable "zookeeper_image" {
+#  description = "Docker image for Zookeeper"
+#  type        = string
+#  #default     = "docker.io/bitnami/zookeeper:3.9"
+# }
 
-variable "kafdrop_image" {
-  description = "Kafdrop Image for kafka monitoring"
-  type        = string
-  #default     = "docker.io/obsidiandynamics/kafdrop:latest"
-  
-}
+#variable "kafdrop_image" {
+#  description = "Kafdrop Image for kafka monitoring"
+#  type        = string
+#  default     = "docker.io/obsidiandynamics/kafdrop:latest"  
+#}
 
 # Producer API Token
-variable "api_token" {
-  description = "API token for producer"
-  type        = string
-  default     = "ff11a5aec4414ee9b6db5c6d1053d14f"
-}
+#variable "api_token" {
+#  description = "API token for producer"
+#  type        = string
+#  default     = "ff11a5aec4414ee9b6db5c6d1053d14f"
+#}
 
 # Kafka Topic
-variable "kafka_topic" {
-  description = "Kafka topic for producer"
-  type        = string
-  default     = "market"
-}
+#variable "kafka_topic" {
+#  description = "Kafka topic for producer"
+#  type        = string
+#  default     = "market"
+#}
 
 # Output the Kafdrop Service URL
 # output "kafdrop_service_url" {

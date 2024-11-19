@@ -1,4 +1,12 @@
 # kafdrop/kafdrop-deployment.tf
+
+variable "kafdrop_image" {
+  description = "Kafdrop Image for kafka monitoring"
+  type        = string
+  #default     = "docker.io/obsidiandynamics/kafdrop:latest"
+  
+}
+
 resource "kubernetes_deployment" "kafdrop" {
   metadata {
     name = "kafdrop"

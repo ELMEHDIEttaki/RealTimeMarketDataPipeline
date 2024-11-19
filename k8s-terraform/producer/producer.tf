@@ -1,4 +1,18 @@
 # producer/producer-deployment.tf
+
+variable "api_token" {
+  description = "API token for producer"
+  type        = string
+  default     = "ff11a5aec4414ee9b6db5c6d1053d14f"
+}
+
+# Kafka Topic
+variable "kafka_topic" {
+  description = "Kafka topic for producer"
+  type        = string
+  default     = "market"
+}
+
 resource "kubernetes_deployment" "producer" {
   metadata {
     name = "twelvedata-producer"
@@ -32,11 +46,11 @@ resource "kubernetes_deployment" "producer" {
           }
           env {
             name  = "API_TOKEN"
-            value = "ff11a5aec4414ee9b6db5c6d1053d14f"
+            value = var.api_token
           }
           env {
             name  = "KAFKA_TOPIC"
-            value = "market"
+            value = var.kafka_topic
           }
         }
       }
