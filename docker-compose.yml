@@ -1,84 +1,15 @@
-# Copyright VMware, Inc.
-# SPDX-License-Identifier: APACHE-2.0
-
-version: "1"
-networks:
-  ecosystem:
-    driver: bridge
+version: "3.6"
 
 services:
-  zookeeper:
-    image: docker.io/bitnami/zookeeper:3.9
-    networks:
-      - ecosystem
-    ports:
-      - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ALLOW_ANONYMOUS_LOGIN: "yes"
-      ZOOKEEPER_TICK_TIME: 2000
+
   kafka:
-    image: docker.io/bitnami/kafka:latest
-    restart: "no"
-    networks:
-      - ecosystem
-    ports:
-      - "9092:9092"
-      - "29092:29092"
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    depends_on:
-      - zookeeper  
-  kafdrop:
-    image: docker.io/obsidiandynamics/kafdrop:latest
-    restart: "no"
-    networks:
-      - ecosystem
-    ports:
-      - "9000:9000"
-    environment:
-      - KAFKA_BROKERCONNECT=kafka:29092
-    depends_on:
-      - kafka
-    volumes:
-      - "kafdrop_data:/obsidiandynamics"
-  producer:
-    networks:
-      - ecosystem
-    ports:
-      - "8001:8001"
-    restart: "on-failure"
     build:
-      context : ./ingestion
+      context: ./message-broker
       dockerfile: Dockerfile
-    container_name: twelvedata_producer
-    # env_file:
-    #   - ./ingestion/.env
-    environment:
-      - BROKER_URL=kafka:29092
-      - API_TOKEN=
-      - KAFKA_TOPIC=market
-    depends_on:
-      - kafka
-    #command: ["python3", "src/twelve_data_producer.py"]
-volumes:
-  zookeeper_data:
-    driver: local
-  kafka_data:
-    driver: local
-  kafdrop_data:
-    driver: local
-  # producer_data:
-  #   driver: local
+    container_name: kafka
+  
+  twelvedataproducer:
+    build:
+      context: ./ingestion
+      dockerfile: Dockerfile
+    container_name: twelvedata-producer
