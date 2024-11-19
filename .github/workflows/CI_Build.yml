@@ -20,6 +20,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
+      # Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      
       # - name: Set up kind (Kubernetes in Docker)
       #   uses: kind-ci/kind-action@v1
       #   with:
@@ -31,13 +37,16 @@ jobs:
           with:
           cpus: 2
           memory: 6144
+
       - name: check pods
         run: kubectl get pods -A
+
       - name: set docker environment for k8s
         run: |
           export SHELL=/bin/bash
           eval $(minikube -p minikube docker-env)
           docker-compose -f docker-compose-ci.yaml build --no-cache
+
       - name: check docker images
         run: minikube image ls --format table
 
@@ -51,6 +60,7 @@ jobs:
       - name: Terraform Initialization
         working-directory: ./k8s-terraform
         run: terraform init
+        
       # Terraform Validate
       - name: Terraform Validate
         run: terraform validate
