@@ -49,10 +49,4 @@ The development of this pipeline is organized into several sprints, each focusin
 **Sprint 6: Testing, Monitoring, and User Feedback.**
 -  Conduct end-to-end testing, set up monitoring, and gather user feedback to enhance the dashboards.
 
-## **Development and Task Tracking**
-To keep track of the development process, we are using Trello to organize tasks, monitor sprint progress, and track issue resolution. Visit our Trello board here for an overview of ongoing and completed tasks:
-
-🔗 Real-Time Market Data Pipeline SCRUM Board
-https://trello.com/invite/b/67295dd5282fe5b6b398317e/ATTI4851f55e62f0730b0a50896302ed33c9CC25B5E4/real-time-market-data-pipeline-scrum
-
 ---

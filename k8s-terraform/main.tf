@@ -31,14 +31,6 @@ provider "helm" {
 provider "kubectl" {}
 
 
-
-# Configure the Kubernetes provider
-# provider "kubernetes" {
-#   config_path = var.kubeconfig_path
-# }
-
-
-
 # Define the Kubernetes namespace
 resource "kubernetes_namespace" "ecosystem" {
   metadata {
@@ -47,25 +39,25 @@ resource "kubernetes_namespace" "ecosystem" {
 }
 
 # Zookeeper Deployment
-module "zookeeper" {
-  source = "./zookeeper"
-  zookeeper_image = var.zookeeper_image
-}
+#module "zookeeper" {
+#  source = "./zookeeper"
+#  zookeeper_image = var.zookeeper_image
+#}
 
 # Kafka Deployment
-module "kafka" {
-  source = "./kafka"
-  kafka_image = var.kafka_image
-}
+#module "kafka" {
+#  source = "./kafka"
+#  kafka_image = var.kafka_image
+#}
 
 # Kafdrop Deployment
-module "kafdrop" {
-  source = "./kafdrop"
-  kafdrop_image = var.kafdrop_image
-}
+#module "kafdrop" {
+#  source = "./kafdrop"
+#  kafdrop_image = var.kafdrop_image
+#}
 
 # Producer Deployment
-module "producer" {
-  source = "./producer"
-}
+#module "producer" {
+#  source = "./producer"
+#}
 

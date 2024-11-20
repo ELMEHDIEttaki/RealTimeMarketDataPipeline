@@ -34,7 +34,6 @@ jobs:
       - name: Set up Minikube
         uses: medyagh/setup-minikube@v0.0.11
         with:
-          with:
           cpus: 2
           memory: 6144
 
