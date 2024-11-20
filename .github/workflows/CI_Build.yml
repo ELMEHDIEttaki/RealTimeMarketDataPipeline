@@ -48,7 +48,9 @@ jobs:
           docker-compose -f docker-compose-ci.yaml build --no-cache
 
       - name: check docker images
-        run: minikube image ls --format table
+        run: |
+          minikube image ls --format table
+          minikube dashboard
 
       # Set up Terraform
       - name: Install Terraform
