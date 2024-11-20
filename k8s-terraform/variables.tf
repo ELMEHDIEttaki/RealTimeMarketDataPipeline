@@ -61,7 +61,7 @@ variable "kafdrop_image" {
 # }
 
 # variables.tf (or where your outputs are defined)
-output "kafdrop_service_url" {
-  value       = module.kafdrop.service_url
-  depends_on  = [module.kafdrop]
-}
+# output "kafdrop_service_url" {
+#   value       = module.kafdrop.service_url
+#   depends_on  = [module.kafdrop]
+# }
