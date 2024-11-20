@@ -51,6 +51,17 @@ jobs:
         run: |
           minikube image ls --format table
           minikube dashboard
+      
+      - name: Enable Minikube Dashboard
+      run: |
+        minikube addons enable dashboard
+        minikube addons enable metrics-server
+  
+      - name: Start Kubectl Proxy
+        run: kubectl proxy --port=8001 &
+
+      - name: Output Dashboard URL
+        run: echo "Dashboard URL: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/"
 
       # Set up Terraform
       - name: Install Terraform
