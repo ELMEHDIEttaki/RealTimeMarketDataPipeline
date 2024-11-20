@@ -50,12 +50,12 @@ jobs:
       - name: check docker images
         run: |
           minikube image ls --format table
-          minikube dashboard
+    
       
       - name: Enable Minikube Dashboard
         run: |
-          minikube addons enable dashboard
-          minikube addons enable metrics-server
+         minikube addons enable dashboard
+         minikube addons enable metrics-server
   
       - name: Start Kubectl Proxy
         run: kubectl proxy --port=8001 &
