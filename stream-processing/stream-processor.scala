@@ -12,6 +12,8 @@ object StreamingPreprocessingApp {
     // Retrieve environment variables
     val sparkMasterUrl = dotenv.get("SPARK_MASTER_URL")
     val appName = dotenv.get("APP_NAME")
+    val kafka_server = dotenv.get("BROKER_URL")
+    val kafka_topic = dotenv.get("KAFKA_TOPIC")
 
     // Configure Spark
     val conf = new SparkConf()
@@ -28,10 +30,10 @@ object StreamingPreprocessingApp {
     // Read data from Kafka topic
     val kafkaStream = spark.readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", "kafka-broker:9092")
-      .option("subscribe", "input_topic")
+      .option("kafka.bootstrap.servers", kafka_server)
+      .option("subscribe", kafka_topic)
       .load()
-    
+    println(s"Display incoming data from market topic: $kafkaStream")
     ssc.start()
     ssc.awaitTermination()
   }
