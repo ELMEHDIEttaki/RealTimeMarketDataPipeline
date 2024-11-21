@@ -1,15 +1,15 @@
-version: "3.6"
+# version: "3.6"
 
-services:
+# services:
 
-  kafka:
-    build:
-      context: ./message-broker
-      dockerfile: Dockerfile
-    container_name: kafka
+#   kafka:
+#     build:
+#       context: ./message-broker
+#       dockerfile: Dockerfile
+#     container_name: kafka
   
-  twelvedataproducer:
-    build:
-      context: ./ingestion
-      dockerfile: Dockerfile
-    container_name: twelvedata-producer
+#   twelvedataproducer:
+#     build:
+#       context: ./ingestion
+#       dockerfile: Dockerfile
+#     container_name: twelvedata-producer

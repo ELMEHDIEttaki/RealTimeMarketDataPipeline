@@ -1,7 +1,7 @@
 # Copyright VMware, Inc.
 # SPDX-License-Identifier: APACHE-2.0
 
-version: "1"
+version: "3"
 networks:
   ecosystem:
     driver: bridge
@@ -73,12 +73,60 @@ services:
     depends_on:
       - kafka
     #command: ["python3", "src/twelve_data_producer.py"]
+  
+  spark:
+    image: docker.io/bitnami/spark:3.5
+    networks:
+      - ecosystem
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    ports:
+      - "8080:8080"
+    volumes:
+      - "spark_data:/bitnami"
+  spark-worker:
+    image: docker.io/bitnami/spark:3.5
+    networks:
+      - ecosystem
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    volumes:
+      - "spark_worker_data:/bitnami"
+  
+  cassandra:
+    image: hub.docker.com/_/cassandra
+    networks:
+      - ecosystem
+    ports:
+      - "9042:9042"
+    volumes:
+      - "cassandra_data:/_"
+  
 volumes:
   zookeeper_data:
     driver: local
   kafka_data:
     driver: local
   kafdrop_data:
+    driver: local
+  spark_data:
+    driver: local
+  spark_worker_data:
+    driver: local
+  cassandra_data:
     driver: local
   # producer_data:
   #   driver: local
