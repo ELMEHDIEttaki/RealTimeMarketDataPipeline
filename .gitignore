@@ -6,6 +6,7 @@
 /test_kafka.py
 /test.py
 /.env
+/docker-compose/
 
 
 
