@@ -1,112 +1,113 @@
 # .github/workflows/CI_Build.yml
 
-name: Deploy with Terraform CI Pipeline
+# name: Deploy with Terraform CI Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  deploy:
-    name: Terraform Apply
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     name: Terraform Apply
+#     runs-on: ubuntu-latest
 
-    steps:
-      # Checkout repository
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       # Checkout repository
+#       - name: Checkout code
+#         uses: actions/checkout@v2
       
-      # Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+#       # Install Docker Compose
+#       - name: Install Docker Compose
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y docker-compose
       
-      # - name: Set up kind (Kubernetes in Docker)
-      #   uses: kind-ci/kind-action@v1
-      #   with:
-      #     cluster_name: my-cluster
+#       # - name: Set up kind (Kubernetes in Docker)
+#       #   uses: kind-ci/kind-action@v1
+#       #   with:
+#       #     cluster_name: my-cluster
   
-      - name: Set up Minikube
-        uses: medyagh/setup-minikube@v0.0.11
-        with:
-          cpus: 2
-          memory: 6144
+#       - name: Set up Minikube
+#         uses: medyagh/setup-minikube@v0.0.11
+#         with:
+#           cpus: 2
+#           memory: 6144
 
-      - name: check pods
-        run: kubectl get pods -A
+#       - name: check pods
+#         run: kubectl get pods -A
 
-      - name: set docker environment for k8s
-        run: |
-          export SHELL=/bin/bash
-          eval $(minikube -p minikube docker-env)
-          docker-compose -f docker-compose-ci.yaml build --no-cache
+#       - name: set docker environment for k8s
+#         run: |
+#           export SHELL=/bin/bash
+#           eval $(minikube -p minikube docker-env)
+#           docker-compose -f docker-compose-ci.yaml build --no-cache
 
-      - name: check docker images
-        run: |
-          minikube image ls --format table
+#       - name: check docker images
+#         run: |
+#           minikube image ls --format table
       
-      - name: Launch Minikube Dashboard
-        run: |
-          minikube dashboard --url
+#       - name: Launch Minikube Dashboard
+#         run: |
+#           minikube dashboard --url
         
     
       
-      # - name: Enable Minikube Dashboard
-      #   run: |
-      #    minikube addons enable dashboard
-      #    minikube addons enable metrics-server
+#       # - name: Enable Minikube Dashboard
+#       #   run: |
+#       #    minikube addons enable dashboard
+#       #    minikube addons enable metrics-server
   
-      # - name: Start Kubectl Proxy
-      #   run: kubectl proxy --port=8001 &
+#       # - name: Start Kubectl Proxy
+#       #   run: kubectl proxy --port=8001 &
 
-      # - name: Output Dashboard URL
-      #   run: echo "Dashboard URL http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/"
+#       # - name: Output Dashboard URL
+#       #   run: echo "Dashboard URL http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/"
 
-      # Set up Terraform
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.5.6  # Specify the required Terraform version
+#       # Set up Terraform
+#       - name: Install Terraform
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 1.5.6  # Specify the required Terraform version
 
-      # Terraform Init
-      - name: Terraform Initialization
-        working-directory: ./k8s-terraform
-        run: terraform init
+#       # Terraform Init
+#       - name: Terraform Initialization
+#         working-directory: ./k8s-terraform
+#         run: terraform init
         
-      # Terraform Validate
-      - name: Terraform Validate
-        run: terraform validate
+#       # Terraform Validate
+#       - name: Terraform Validate
+#         run: terraform validate
 
-      # Terraform Plan
-      - name: Run Terraform Plan
-        id: plan
-        working-directory: ./k8s-terraform
-        run: terraform plan -out=tfplan
-        env:
-          # TF_VAR_kafka_image: docker.io/bitnami/kafka:latest
-          # TF_VAR_zookeeper_image: docker.io/bitnami/zookeeper:3.9
-          # TF_VAR_kafdrop_image: docker.io/obsidiandynamics/kafdrop:latest
-          TF_LOG: INFO
-          TF_INPUT: false
+#       # Terraform Plan
+#       - name: Run Terraform Plan
+#         id: plan
+#         working-directory: ./k8s-terraform
+#         run: terraform plan -out=tfplan
+#         env:
+#           # TF_VAR_kafka_image: docker.io/bitnami/kafka:latest
+#           # TF_VAR_zookeeper_image: docker.io/bitnami/zookeeper:3.9
+#           # TF_VAR_kafdrop_image: docker.io/obsidiandynamics/kafdrop:latest
+#           TF_LOG: INFO
+#           TF_INPUT: false
 
-      # Apply Terraform configuration if on main branch or if approved
-      - name: Run Terraform Apply
-        working-directory: ./k8s-terraform
-        if: github.event_name == 'push'
-        run: terraform apply -auto-approve tfplan
-        env:
-          TF_LOG: INFO
-          TF_INPUT: false
+#       # Apply Terraform configuration if on main branch or if approved
+#       - name: Run Terraform Apply
+#         working-directory: ./k8s-terraform
+#         if:|
+#            github.event_name == 'push'
+#         run: terraform apply -auto-approve tfplan
+#         env:
+#           TF_LOG: INFO
+#           TF_INPUT: false
 
-      # Output URLs for services (optional)
-      - name: Output Service URLs
-        run: |
-          echo "Producer Service URL: $(terraform output -raw producer_service_url)"
-          echo "Kafka Service URL: $(terraform output -raw kafka_service_url)"
-          echo "Zookeeper Service URL: $(terraform output -raw zookeeper_service_url)"
-          echo "Kafdrop Service URL: $(terraform output -raw kafdrop_service_url)"
+#       # Output URLs for services (optional)
+#       - name: Output Service URLs
+#         run: |
+#           echo "Producer Service URL: $(terraform output -raw producer_service_url)"
+#           echo "Kafka Service URL: $(terraform output -raw kafka_service_url)"
+#           echo "Zookeeper Service URL: $(terraform output -raw zookeeper_service_url)"
+#           echo "Kafdrop Service URL: $(terraform output -raw kafdrop_service_url)"
