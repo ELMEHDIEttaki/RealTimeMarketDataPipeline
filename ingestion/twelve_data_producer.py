@@ -3,7 +3,7 @@ import os
 import logging
 from twelvedata import TDClient  # Replace with the actual TwelveData client library if different
 from dotenv import find_dotenv, load_dotenv
-from utils.function import (load_producer, load_avro_schema, 
+from src.utils.function import (load_producer, load_avro_schema, 
                             avro_encode, adapt_message_for_avro)
 
 # Create logs directory if it doesn't exist

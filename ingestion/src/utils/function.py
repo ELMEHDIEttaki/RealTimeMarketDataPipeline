@@ -3,7 +3,6 @@ import avro.schema
 import avro.io
 from kafka import KafkaProducer
 import logging
-import os
 
 
 # Create logs directory if it doesn't exist
