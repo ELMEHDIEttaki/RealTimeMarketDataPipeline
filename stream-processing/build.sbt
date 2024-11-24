@@ -1,6 +1,7 @@
-
 // build.sbt
 import sbt.Keys._
+
+val sparkVersion = "3.5.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -8,31 +9,25 @@ lazy val root = (project in file("."))
     version := "1.0",
     scalaVersion := "2.12.15",
     
-    // Avro settings
+    // Set the main class
+    Compile / mainClass := Some("stream-processor"),
+    
+    // Dependencies
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
-      "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided",
-      "org.apache.spark" %% "spark-sql" % sparkVersion % "provided",
-      "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion % "provided",
-      "org.apache.spark" %% "spark-avro" % sparkVersion % "provided",
-      "com.datastax.spark" %% "spark-cassandra-connector" % sparkVersion % "provided",
-      "com.datastax.cassandra" % "cassandra-driver-core" % "3.11.3" % "provided",
-      "nl.gn0s1s" % "sbt-dotenv" % "3.1.0"
-    )
-
-    // Avro source directory configuration
-    //Compile / avroSource := baseDirectory.value / "src" / "main" / "avro",
-    //Compile / sourceGenerators += (Compile / avroScalaGenerateSpecific).taskValue
+      "org.apache.spark" %% "spark-core" % sparkVersion,
+      "org.apache.spark" %% "spark-streaming" % sparkVersion,
+      "org.apache.spark" %% "spark-sql" % sparkVersion,
+      "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
+      "org.apache.spark" %% "spark-avro" % sparkVersion,
+      "com.datastax.spark" %% "spark-cassandra-connector" % sparkVersion,
+      "com.datastax.cassandra" % "cassandra-driver-core" % "3.11.3",
+      "io.github.cdimascio" % "dotenv-java" % "2.2.4",
+      "org.apache.avro" % "avro" % "1.11.3"
+    ),
     
-    // Optional: specify Java source compatibility if needed
-    // javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+    // Remove 'provided' scope for local development
+    run / fork := true,
     
-    // Add Avro specific settings
-    // avroSpecificSourceDirectory := baseDirectory.value / "src" / "main" / "avro",
-    // avroSpecificScalaSource := baseDirectory.value / "src" / "main" / "streaming-processing"
+    // Add Spark Packages resolver
+    resolvers += "Spark Packages Repo" at "https://dl.bintray.com/spark-packages/maven"
   )
-
-val sparkVersion = "3.5.0"
-
-// Add resolver for Spark packages
-resolvers += "Spark Packages Repo" at "https://dl.bintray.com/spark-packages/maven"
