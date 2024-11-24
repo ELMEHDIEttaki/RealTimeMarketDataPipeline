@@ -1,18 +1,15 @@
-// build.sbt
-import sbt.Keys._
+// stream-processing/build.sbt
 
 val sparkVersion = "3.5.0"
 
+ThisBuild / version := "1.0.0"
+ThisBuild / scalaVersion := "2.12.15"
+ThisBuild / organization := "com.market"
+
 lazy val root = (project in file("."))
   .settings(
-    name := "StreamingPreprocessing",
-    version := "1.0",
-    scalaVersion := "2.12.15",
+    name := "stream-processing",
     
-    // Set the main class
-    Compile / mainClass := Some("stream-processor"),
-    
-    // Dependencies
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % sparkVersion,
       "org.apache.spark" %% "spark-streaming" % sparkVersion,
@@ -24,10 +21,15 @@ lazy val root = (project in file("."))
       "io.github.cdimascio" % "dotenv-java" % "2.2.4",
       "org.apache.avro" % "avro" % "1.11.3"
     ),
+
+    Compile / run / mainClass := Some("src.main.scala.com.market.StreamingPreprocessingApp"),
+    assembly / mainClass := Some("com.market.StreamingPreprocessingApp"),
     
-    // Remove 'provided' scope for local development
-    run / fork := true,
-    
-    // Add Spark Packages resolver
-    resolvers += "Spark Packages Repo" at "https://dl.bintray.com/spark-packages/maven"
+    run / fork := true
   )
+
+// Assembly settings
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}

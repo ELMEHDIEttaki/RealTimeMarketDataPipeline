@@ -43,6 +43,8 @@ object StreamingPreprocessingApp {
 
 // src/main/streaming-processing/StreamingPreprocessingApp.scala
 
+package com.market
+
 import org.apache.spark.sql.{SparkSession, DataFrame}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.avro._
@@ -78,6 +80,8 @@ object StreamingPreprocessingApp {
       .appName(SparkAppName)
       .config("spark.sql.streaming.checkpointLocation", checkpointLocation)
       .getOrCreate()
+    
+    println("Spark session created successfully")
 
     import spark.implicits._
 
@@ -124,6 +128,9 @@ object StreamingPreprocessingApp {
         query.stop()
         spark.stop()
       }
+
+      println("Application running... Press CTRL+C to exit")
+      Thread.sleep(Long.MaxValue)
 
       // Wait for the streaming query to terminate
       query.awaitTermination()
