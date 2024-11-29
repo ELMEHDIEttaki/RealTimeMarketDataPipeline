@@ -1,7 +1,6 @@
 # Copyright VMware, Inc.
 # SPDX-License-Identifier: APACHE-2.0
 
-
 networks:
   ecosystem:
     driver: bridge
@@ -111,7 +110,7 @@ services:
       - "spark_worker_data:/bitnami"
   
   cassandra:
-    image: docker.io/bitnami/cassandra
+    image: docker.io/bitnami/cassandra:3.0.1
     networks:
       - ecosystem
     ports:

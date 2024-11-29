@@ -4,10 +4,12 @@
 /logs/app.log
 /logs/avro.log
 /test_kafka.py
-/test.py
 /.env
 stream-processing/src/main/resources/.env
 /docker-compose/
+/setup.sh
+/cs
+/test.py
 
 
 
