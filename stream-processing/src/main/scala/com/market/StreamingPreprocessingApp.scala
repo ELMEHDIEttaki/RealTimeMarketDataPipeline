@@ -74,9 +74,12 @@ object StreamingPreprocessingApp {
     val schemaPath = dotenv.get("AVRO_SCHEMA_PATH")
     val checkpointLocation = dotenv.get("CHECKPOINT_LOCATION")
     val SparkAppName = dotenv.get("APP_NAME")
+    val MasterUrl = dotenv.get("SPARK_MASTER_URL")
 
     // Initialize Spark Session
-    val spark = SparkSession.builder()
+    val spark = SparkSession
+      .builder
+      .master("spark://172.20.0.4:7077")
       .appName(SparkAppName)
       .config("spark.sql.streaming.checkpointLocation", checkpointLocation)
       .getOrCreate()

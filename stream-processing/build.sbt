@@ -18,18 +18,24 @@ lazy val root = (project in file("."))
       "org.apache.spark" %% "spark-avro" % sparkVersion,
       "com.datastax.spark" %% "spark-cassandra-connector" % sparkVersion,
       "com.datastax.cassandra" % "cassandra-driver-core" % "3.11.3",
-      "io.github.cdimascio" % "dotenv-java" % "2.2.4",
-      "org.apache.avro" % "avro" % "1.11.3"
+      "io.github.cdimascio" % "dotenv-java" % "2.2.4"
     ),
 
-    Compile / run / mainClass := Some("src.main.scala.com.market.StreamingPreprocessingApp"),
+    Compile / run / mainClass := Some("com.market.StreamingPreprocessingApp"),
     assembly / mainClass := Some("com.market.StreamingPreprocessingApp"),
     
+    
     run / fork := true
+
   )
 
+//enablePlugins(SbtAvro)
+//avroVersion := "1.12.0"
+
+
+
 // Assembly settings
-assemblyMergeStrategy in assembly := {
+assemblyMergeStrategy := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case x => MergeStrategy.first
+  case x                             => MergeStrategy.first
 }

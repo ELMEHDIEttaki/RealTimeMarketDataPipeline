@@ -110,7 +110,7 @@ services:
       - "spark_worker_data:/bitnami"
   
   cassandra:
-    image: docker.io/bitnami/cassandra:3.0.1
+    image: docker.io/bitnami/cassandra:latest
     networks:
       - ecosystem
     ports:

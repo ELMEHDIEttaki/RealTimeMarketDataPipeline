@@ -1,0 +1,4 @@
+1733097852764:java -jar target/scala-2.12/realtimemarketdatapipeline_2.12-0.1.0-SNAPSHOT.jar
+1733098169802:compile
+1733098185158:assembly
+1733098274712:clear
