@@ -1,2 +1,4 @@
 [0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
-[0m[[0m[0mdebug[0m] [0m[0m	[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/src/main/resources/application.conf,/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/src/main/resources/deployment.conf,/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/deployment.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/src/main/resources/avro_schema/trades.avsc,/media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/avro_schema/trades.avsc)[0m

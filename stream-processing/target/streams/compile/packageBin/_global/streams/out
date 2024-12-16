@@ -1,11 +1,23 @@
 [0m[[0m[0mdebug[0m] [0m[0mPackaging /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/stream-processing_2.12-1.0.0.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	application.conf[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/application.conf[0m
+[0m[[0m[0mdebug[0m] [0m[0m	avro_schema[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/avro_schema[0m
+[0m[[0m[0mdebug[0m] [0m[0m	avro_schema/trades.avsc[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/avro_schema/trades.avsc[0m
 [0m[[0m[0mdebug[0m] [0m[0m	com[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com[0m
 [0m[[0m[0mdebug[0m] [0m[0m	com/market[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com/market[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/market/Settings.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com/market/Settings.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	com/market/StreamingPreprocessingApp$$typecreator1$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com/market/StreamingPreprocessingApp$$typecreator1$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	com/market/StreamingPreprocessingApp$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com/market/StreamingPreprocessingApp$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	com/market/StreamingPreprocessingApp.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/com/market/StreamingPreprocessingApp.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	deployment.conf[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /media/elmehdi/Mehdi/RealTimeMarketDataPipeline/stream-processing/target/scala-2.12/classes/deployment.conf[0m
 [0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m

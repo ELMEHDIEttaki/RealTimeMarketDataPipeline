@@ -43,63 +43,71 @@ object StreamingPreprocessingApp {
 
 // src/main/streaming-processing/StreamingPreprocessingApp.scala
 
+
 package com.market
 
+import com.datastax.oss.driver.api.core.uuid.Uuids
 import org.apache.spark.sql.{SparkSession, DataFrame}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.avro._
 import org.apache.spark.sql.types._
-import io.github.cdimascio.dotenv.Dotenv
+//import io.github.cdimascio.dotenv.Dotenv
 import java.nio.file.{Files, Paths}
 import scala.io.Source
+import com.typesafe.config.ConfigFactory
+import com.market.Settings
+
+
+
 
 object StreamingPreprocessingApp {
-  def loadAvroSchemaFromFile(schemaPath: String): String = {
-    try {
-      new String(Files.readAllBytes(Paths.get(schemaPath)))
-    } catch {
-      case e: Exception =>
-        println(s"Error loading schema file: ${e.getMessage}")
-        throw e
-    }
-  }
 
-  def main(args: Array[String]): Unit = {
-    // Load environment variables
-    val dotenv = Dotenv.load()
+  def main(args: Array[String]): Unit = 
+  {
+    val config = ConfigFactory.load("application.conf")
+    val settings = new Settings(config)
+    // Print configurations to verify
+    settings.printConfigs()
     
-    // Configuration parameters
-    val kafkaServer = dotenv.get("BROKER_URL")
-    val kafkaTopic = dotenv.get("KAFKA_TOPIC")
-    val schemaPath = dotenv.get("AVRO_SCHEMA_PATH")
-    val checkpointLocation = dotenv.get("CHECKPOINT_LOCATION")
-    val SparkAppName = dotenv.get("APP_NAME")
-    val MasterUrl = dotenv.get("SPARK_MASTER_URL")
 
-    // Initialize Spark Session
+    // loading trades schema
+    val tradesSchema: String = Source.fromInputStream( 
+        getClass.getResourceAsStream(settings.schemas("trades"))).mkString
+    println("Schema Uploaded" + tradesSchema)
+    // udf for Cassandra uuids
+    val makeUUID = udf(() => Uuids.timeBased().toString)
+    println("makeUUID for Cassandra " + makeUUID)
+    
+    // create Spark session
     val spark = SparkSession
-      .builder
-      .master("spark://172.20.0.4:7077")
-      .appName(SparkAppName)
-      .config("spark.sql.streaming.checkpointLocation", checkpointLocation)
-      .getOrCreate()
+        .builder
+        .master(settings.spark("master"))
+        .appName(settings.spark("appName"))
+        .config("spark.cassandra.connection.host",settings.cassandra("host"))
+        .config("spark.cassandra.auth.username", settings.cassandra("username"))
+        .config("spark.cassandra.auth.password", settings.cassandra("password"))
+        .config("spark.sql.shuffle.partitions", settings.spark("shuffle_partitions"))
+        .getOrCreate()
+    
+    // Configure error handling
+    spark.conf.set("spark.sql.streaming.stopGracefullyOnShutdown", "true")
+
     
     println("Spark session created successfully")
 
     import spark.implicits._
 
     // Load Avro schema
-    val avroSchema = loadAvroSchemaFromFile(schemaPath)
+    // val avroSchema = loadAvroSchemaFromFile(schemaPath)
     
-    // Configure error handling
-    spark.conf.set("spark.sql.streaming.stopGracefullyOnShutdown", "true")
+
 
     try {
       // Create streaming DataFrame from Kafka
       val kafkaStream = spark
         .readStream
         .format("kafka")
-        .option("kafka.bootstrap.servers", kafkaServer)
+        .option("kafka.bootstrap.servers", settings.kafka(""))
         .option("subscribe", kafkaTopic)
         .option("startingOffsets", "latest")
         .option("failOnDataLoss", "false")
@@ -123,27 +131,28 @@ object StreamingPreprocessingApp {
         .outputMode("append")
         .format("console")
         .option("truncate", "false")
-        .start()
+        .start()*/
 
       // Add shutdown hook
-      sys.addShutdownHook {
-        println("Gracefully stopping Spark Streaming application...")
-        query.stop()
-        spark.stop()
-      }
+    //  sys.addShutdownHook {
+    //    println("Gracefully stopping Spark Streaming application...")
+    //    query.stop()
+    //    spark.stop()
+    //  }
 
       println("Application running... Press CTRL+C to exit")
       Thread.sleep(Long.MaxValue)
 
       // Wait for the streaming query to terminate
-      query.awaitTermination()
+      //query.awaitTermination()
 
-    } catch {
+     /*catch {
       case e: Exception =>
         println(s"Error in streaming application: ${e.getMessage}")
         e.printStackTrace()
         spark.stop()
         System.exit(1)
-    }
+    }*/
   }
 }
+
